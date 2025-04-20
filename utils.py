@@ -5,9 +5,12 @@ load_dotenv()
 
 
 def get_gemini_response(input_prompt, image_data):
-    model = genai.GenerativeModel("gemini-2.0-flash")
-    response = model.generate_content([input_prompt, image_data[0]])
-    return response.text
+    try:
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content([input_prompt, image_data[0]])
+        return response.text
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
 
 def input_image_setup(uploaded_file):
     try:
