@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 from utils import get_gemini_response, input_image_setup
 import google.generativeai as genai
 import json
@@ -10,6 +12,15 @@ import re
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["*"] for all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 input_prompt = """ 
 You are an expert nutritionist. Based on the image, calculate the total calories and provide details of every food item with its calorie intake in the following format:
