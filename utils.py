@@ -6,8 +6,8 @@ load_dotenv()
 
 def get_gemini_response(input_prompt, image_data):
     model = genai.GenerativeModel("gemini-2.0-flash")
-    reponse = model.generate_content([input_prompt, image_data[0]])
-    return reponse.text
+    response = model.generate_content([input_prompt, image_data[0]])
+    return response.text
 
 def input_image_setup(uploaded_file):
     try:
