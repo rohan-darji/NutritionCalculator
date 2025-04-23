@@ -4,3 +4,4 @@ flask
 fastapi[standard]
 uvicorn
 streamlit
+supabase
