@@ -1,6 +1,6 @@
 # Nutrition Calculator API
 
-A FastAPI-based application that uses Google's Gemini AI model to analyze food images and provide detailed nutritional information. The API can identify food items in images and calculate their calories, healthiness, and nutrient breakdown.
+A FastAPI-based application that uses Google's Gemini AI model to analyze food images and provide detailed nutritional information. The API can identify food items in images and calculate their calories, healthiness, and nutrient breakdown. Additionally, it evaluates food safety based on user allergy profiles.
 
 ## Features
 
@@ -8,12 +8,14 @@ A FastAPI-based application that uses Google's Gemini AI model to analyze food i
 - Calorie calculation for identified food items
 - Healthiness assessment
 - Detailed nutrient breakdown (carbohydrates, protein, fats, fiber, sugar)
+- Allergy evaluation for food safety
 - RESTful API endpoints
 
 ## Prerequisites
 
 - Python 3.7+
 - Google API Key for Gemini AI
+- Supabase credentials
 - FastAPI
 - Required Python packages (listed in requirements.txt)
 
@@ -30,9 +32,11 @@ cd NutritionCalculator
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file in the project root and add your Google API key:
+3. Create a `.env` file in the project root and add your API keys and Supabase credentials:
 ```
-GOOGLE_API_KEY=your_api_key_here
+GOOGLE_API_KEY=your_google_api_key_here
+SUPABASE_URL=your_supabase_url_here
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
 ```
 
 ## Running the Application
@@ -52,12 +56,15 @@ uvicorn main:app --reload
 
 ### POST /calculate-nutrition/
 - Analyzes an uploaded food image and returns nutritional information
-- Accepts: Image file (JPG, JPEG, or PNG)
+- Accepts:
+  - `user_id` (Form): User ID for fetching allergy data
+  - `image` (File): Image file (JPG, JPEG, or PNG)
 - Returns: JSON response with:
   - Total calories
   - List of food items with their calories
   - Healthiness assessment
   - Nutrient breakdown
+  - Food safety evaluation based on user allergies
 
 ## Example Response
 
@@ -75,7 +82,8 @@ uvicorn main:app --reload
         "fats": "25%",
         "fiber": "5g",
         "sugar": "2g"
-    }
+    },
+    "is_safe_to_consume": true
 }
 ```
 
@@ -86,11 +94,13 @@ The API includes error handling for:
 - Invalid file types
 - Processing errors
 - JSON parsing errors
+- Allergy evaluation errors
 
 ## Technologies Used
 
 - FastAPI
 - Google Gemini AI
+- Supabase
 - Python-dotenv
 - Uvicorn
 
